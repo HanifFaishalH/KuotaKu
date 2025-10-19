@@ -14,7 +14,7 @@ export default function Button({
   const { colors } = useTheme();
 
   // Base classes
-  const baseClasses = "rounded-md text-white flex items-center gap-2 transition-all duration-300 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2";
+  const baseClasses = "rounded-md flex items-center justify-center gap-2 transition-all duration-300 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer";
   
   // Size classes
   const sizeClasses = {
