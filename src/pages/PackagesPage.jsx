@@ -1,153 +1,192 @@
 // pages/PackagesPage.jsx
-import React, { useState } from 'react';
-import { useTheme } from '../ThemeContext';
-import Button from '../components/Button';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import PackageCard from '../components/PackageCard';
+import PackageDetail from './PackageDetail';
+import { productsAPI } from '../services/api';
 
-const PackagesPage = () => {
-    const theme = useTheme();
-    const [selectedProvider, setSelectedProvider] = useState('all');
+const PackagesPage = ({ user }) => {
+    const [packages, setPackages] = useState([]);
+    const [filteredPackages, setFilteredPackages] = useState([]);
+    const [selectedPackage, setSelectedPackage] = useState(null);
+    const [isDetailOpen, setIsDetailOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [providerFilter, setProviderFilter] = useState('all');
+    
+    const navigate = useNavigate();
 
-    // Sample data paket
-    const packages = [
-        {
-            id: 1,
-            provider: 'Telkomsel',
-            name: 'Internet OMG!',
-            quota: '10 GB',
-            validity: '30 Hari',
-            price: 'Rp 50.000',
-            color: 'red'
-        },
-        {
-            id: 2,
-            provider: 'Indosat',
-            name: 'Freedom Internet',
-            quota: '15 GB',
-            validity: '30 Hari',
-            price: 'Rp 55.000',
-            color: 'yellow'
-        },
-        {
-            id: 3,
-            provider: 'XL',
-            name: 'XL Unlimited',
-            quota: '20 GB',
-            validity: '30 Hari',
-            price: 'Rp 65.000',
-            color: 'blue'
-        },
-        {
-            id: 4,
-            provider: 'Tri',
-            name: 'Tri Data',
-            quota: '25 GB',
-            validity: '30 Hari',
-            price: 'Rp 45.000',
-            color: 'cyan'
-        },
-    ];
+    useEffect(() => {
+        loadPackages();
+    }, []);
 
-    const providers = ['all', 'Telkomsel', 'Indosat', 'XL', 'Tri'];
-
-    const filteredPackages = selectedProvider === 'all' 
-        ? packages 
-        : packages.filter(pkg => pkg.provider === selectedProvider);
-
-    const handleBuyClick = (packageItem) => {
-        // Arahkan ke login atau langsung ke proses pembelian
-        alert(`Anda akan membeli ${packageItem.name}. Silakan login untuk melanjutkan.`);
+    const loadPackages = async () => {
+        try {
+            setLoading(true);
+            const data = await productsAPI.getAll();
+            setPackages(data);
+            setFilteredPackages(data);
+        } catch (error) {
+            console.error('Error loading packages:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    return (
-        <div className="py-8">
-            <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                    Pilih Paket Data Internet
-                </h2>
-                <p className="text-gray-600">
-                    Cari paket data sesuai kebutuhan Anda. Login hanya diperlukan saat pembelian.
-                </p>
-            </div>
+    // Fungsi handleBuyClick yang menggunakan API
+    const handleBuyClick = async (packageItem) => {
+        if (!user) {
+            // User belum login, arahkan ke login
+            navigate('/login');
+            return;
+        }
 
-            {/* Filter Provider */}
-            <div className="flex flex-wrap gap-2 justify-center mb-8">
-                {providers.map(provider => (
-                    <button
-                        key={provider}
-                        onClick={() => setSelectedProvider(provider)}
-                        className={`px-4 py-2 rounded-full font-medium transition-colors ${
-                            selectedProvider === provider
-                                ? 'bg-purple-600 text-white'
-                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                        }`}
-                    >
-                        {provider === 'all' ? 'Semua Provider' : provider}
-                    </button>
-                ))}
-            </div>
+        try {
+            // Validasi data package
+            if (!packageItem || !packageItem.id) {
+                console.error('Package data tidak valid:', packageItem);
+                return;
+            }
 
-            {/* Packages Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {filteredPackages.map(pkg => (
-                    <div key={pkg.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-                        <div 
-                            className="h-3"
-                            style={{ 
-                                backgroundColor: 
-                                    pkg.color === 'red' ? '#EF4444' :
-                                    pkg.color === 'yellow' ? '#F59E0B' :
-                                    pkg.color === 'blue' ? '#3B82F6' : '#06B6D4'
-                            }}
-                        ></div>
-                        <div className="p-6">
-                            <div className="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 className="font-bold text-lg text-gray-800">{pkg.provider}</h3>
-                                    <p className="text-gray-600 text-sm">{pkg.name}</p>
-                                </div>
-                            </div>
-                            
-                            <div className="space-y-2 mb-6">
-                                <div className="flex justify-between">
-                                    <span className="text-gray-600">Kuota:</span>
-                                    <span className="font-semibold">{pkg.quota}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-gray-600">Masa Aktif:</span>
-                                    <span className="font-semibold">{pkg.validity}</span>
-                                </div>
-                                <div className="flex justify-between text-lg font-bold mt-4">
-                                    <span>Harga:</span>
-                                    <span style={{ color: theme.colors.primary }}>{pkg.price}</span>
-                                </div>
-                            </div>
+            // Langsung navigasi ke checkout dengan data package
+            navigate('/checkout', { 
+                state: { 
+                    packageItem: {
+                        id: packageItem.id,
+                        title: packageItem.title,
+                        provider: packageItem.provider,
+                        description: packageItem.description,
+                        quota: packageItem.quota,
+                        price: packageItem.price,
+                        validity: packageItem.validity,
+                        category: packageItem.category,
+                        color: packageItem.color
+                    }
+                } 
+            });
 
-                            <Button 
-                                type="primary"
-                                className="w-full"
-                                onClick={() => handleBuyClick(pkg)}
-                            >
-                                Beli Sekarang
-                            </Button>
-                        </div>
-                    </div>
-                ))}
-            </div>
+        } catch (error) {
+            console.error('Error preparing checkout:', error);
+            // Fallback: tetap navigasi ke checkout dengan data yang ada
+            navigate('/checkout', { 
+                state: { 
+                    packageItem: packageItem 
+                } 
+            });
+        }
+    };
 
-            {/* Info Login */}
-            <div className="mt-12 text-center p-6 bg-blue-50 rounded-lg">
-                <h3 className="font-semibold text-lg mb-2">Ingin Membeli Paket?</h3>
-                <p className="text-gray-600 mb-4">
-                    Login atau daftar terlebih dahulu untuk melakukan pembelian paket data.
-                </p>
-                <div className="flex gap-4 justify-center">
-                    <Button type="primary" size="md">
-                        Login
-                    </Button>
-                    <Button type="secondary" size="md">
-                        Daftar
-                    </Button>
+    const handlePackageClick = (packageItem) => {
+        setSelectedPackage(packageItem);
+        setIsDetailOpen(true);
+    };
+
+    const handleCloseDetail = () => {
+        setIsDetailOpen(false);
+        setSelectedPackage(null);
+    };
+
+    // Filter logic
+    useEffect(() => {
+        let result = packages;
+
+        if (searchTerm) {
+            result = result.filter(pkg => 
+                pkg.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                pkg.provider.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                pkg.description.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        if (providerFilter !== 'all') {
+            result = result.filter(pkg => pkg.provider === providerFilter);
+        }
+
+        setFilteredPackages(result);
+    }, [searchTerm, providerFilter, packages]);
+
+    // Unique providers untuk filter
+    const providers = [...new Set(packages.map(pkg => pkg.provider))];
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Memuat paket data...</p>
                 </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen bg-gray-50 py-8">
+            <div className="container mx-auto px-4">
+                {/* Header */}
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold text-gray-800 mb-2">Paket Data Internet</h1>
+                    <p className="text-gray-600">Pilih paket data terbaik sesuai kebutuhan Anda</p>
+                </div>
+
+                {/* Search and Filter */}
+                <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
+                    <div className="flex flex-col md:flex-row gap-4">
+                        {/* Search Input */}
+                        <div className="flex-1">
+                            <input
+                                type="text"
+                                placeholder="Cari paket data..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            />
+                        </div>
+
+                        {/* Provider Filter */}
+                        <select
+                            value={providerFilter}
+                            onChange={(e) => setProviderFilter(e.target.value)}
+                            className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        >
+                            <option value="all">Semua Provider</option>
+                            {providers.map(provider => (
+                                <option key={provider} value={provider}>
+                                    {provider}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+
+                {/* Packages Grid */}
+                {filteredPackages.length === 0 ? (
+                    <div className="text-center py-12">
+                        <p className="text-gray-600">Tidak ada paket yang ditemukan</p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredPackages.map(pkg => (
+                            <PackageCard
+                                key={pkg.id}
+                                package={pkg}
+                                onClick={() => handlePackageClick(pkg)}
+                                onBuyClick={() => handleBuyClick(pkg)}
+                                user={user}
+                            />
+                        ))}
+                    </div>
+                )}
+
+                {/* Package Detail Modal */}
+                {selectedPackage && (
+                    <PackageDetail
+                        packageItem={selectedPackage}
+                        isOpen={isDetailOpen}
+                        onClose={handleCloseDetail}
+                        onBuyClick={handleBuyClick}
+                        user={user}
+                    />
+                )}
             </div>
         </div>
     );
