@@ -1,9 +1,10 @@
+// components/Layout.jsx
+import React from 'react';
 import { useTheme } from '../ThemeContext';
 import Header from './Header';
-import HeroSection from './HeroSection';
 import Footer from './Footer';
 
-const Layout = ({ children, toggleSidebar, user, onLogout }) => {
+const Layout = ({ children, user, onLogout }) => {
     const theme = useTheme();
 
     return (
@@ -14,9 +15,8 @@ const Layout = ({ children, toggleSidebar, user, onLogout }) => {
                 color: theme.colors.text
             }}
         >
-            <Header toggleSidebar={toggleSidebar} user={user} onLogout={onLogout} />
-            <HeroSection />
-            <main className="flex-1 container mx-auto px-4 py-8">
+            <Header user={user} onLogout={onLogout} />
+            <main className="flex-1">
                 {children}
             </main>
             <Footer />
