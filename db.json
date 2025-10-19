@@ -1,12 +1,281 @@
 {
   "users": [
-    { "id": 1, "name": "Hanif", "email": "hanif@mail.com", "password": "1234", "role": "customer" },
-    { "id": 2, "name": "Siti", "email": "siti@mail.com", "password": "1234", "role": "customer" }
+    {
+      "id": "1",
+      "name": "Mika",
+      "email": "mika@mail.com",
+      "password": "12345678",
+      "role": "customer",
+      "phone": "081234567890",
+      "balance": 225000,
+      "createdAt": "2024-01-01T10:00:00Z"
+    },
+    {
+      "id": "2",
+      "name": "Siti",
+      "email": "siti@mail.com",
+      "password": "12345678",
+      "role": "customer",
+      "phone": "081298765432",
+      "balance": 150000,
+      "createdAt": "2024-01-02T14:30:00Z"
+    },
+    {
+      "id": 3,
+      "name": "agus",
+      "email": "agus@email.com",
+      "phone": "0823-7634-1236",
+      "password": "123456",
+      "balance": 0,
+      "role": "customer",
+      "createdAt": "2025-10-19T08:33:44.813Z"
+    },
+    {
+      "id": 4,
+      "name": "bbbb",
+      "email": "bbbb@email.com",
+      "phone": "0827-3172-3616",
+      "password": "123456",
+      "balance": 0,
+      "role": "customer",
+      "createdAt": "2025-10-19T08:36:56.847Z"
+    }
   ],
   "products": [
-    { "id": 1, "name": "Kuota 5GB", "price": 25000 },
-    { "id": 2, "name": "Kuota 10GB", "price": 45000 },
-    { "id": 3, "name": "Kuota 20GB", "price": 80000 }
+    {
+      "id": "1",
+      "provider": "Telkomsel",
+      "title": "Internet OMG!",
+      "description": "Paket internet harian dengan kuota utama yang dapat digunakan untuk semua aplikasi 24 jam",
+      "quota": "5 GB",
+      "price": 25000,
+      "validity": "30 Hari",
+      "category": "internet",
+      "color": "red",
+      "popular": true,
+      "stock": 100
+    },
+    {
+      "id": "2",
+      "provider": "Telkomsel",
+      "title": "Kuota Ketengan",
+      "description": "Paket internet murah meriah dengan kuota yang cukup untuk kebutuhan sehari-hari",
+      "quota": "10 GB",
+      "price": 45000,
+      "validity": "30 Hari",
+      "category": "internet",
+      "color": "red",
+      "popular": true,
+      "stock": 80
+    },
+    {
+      "id": "3",
+      "provider": "Indosat",
+      "title": "Freedom Internet",
+      "description": "Paket unlimited dengan fair usage policy, cocok untuk streaming dan browsing",
+      "quota": "15 GB",
+      "price": 55000,
+      "validity": "30 Hari",
+      "category": "internet",
+      "color": "yellow",
+      "popular": false,
+      "stock": 60
+    },
+    {
+      "id": "4",
+      "provider": "Indosat",
+      "title": "Mentari Paket",
+      "description": "Paket data dengan bonus nelpon dan SMS ke semua operator",
+      "quota": "20 GB",
+      "price": 65000,
+      "validity": "30 Hari",
+      "category": "internet",
+      "color": "yellow",
+      "popular": true,
+      "stock": 45
+    },
+    {
+      "id": "5",
+      "provider": "XL",
+      "title": "XL Unlimited",
+      "description": "Paket unlimited dengan kecepatan tinggi, tanpa batas waktu penggunaan",
+      "quota": "25 GB",
+      "price": 75000,
+      "validity": "30 Hari",
+      "category": "internet",
+      "color": "blue",
+      "popular": false,
+      "stock": 70
+    },
+    {
+      "id": "6",
+      "provider": "XL",
+      "title": "Bebas Akses",
+      "description": "Paket data dengan akses ke semua aplikasi dan games online",
+      "quota": "30 GB",
+      "price": 85000,
+      "validity": "30 Hari",
+      "category": "internet",
+      "color": "blue",
+      "popular": true,
+      "stock": 55
+    },
+    {
+      "id": "7",
+      "provider": "Tri",
+      "title": "Tri Data",
+      "description": "Paket ekonomis dengan kuota besar, cocok untuk kebutuhan dasar internet",
+      "quota": "35 GB",
+      "price": 40000,
+      "validity": "30 Hari",
+      "category": "internet",
+      "color": "cyan",
+      "popular": false,
+      "stock": 90
+    },
+    {
+      "id": "8",
+      "provider": "Tri",
+      "title": "By.U Internet",
+      "description": "Paket fleksibel dengan kuota yang dapat disesuaikan kebutuhan",
+      "quota": "50 GB",
+      "price": 95000,
+      "validity": "30 Hari",
+      "category": "internet",
+      "color": "cyan",
+      "popular": true,
+      "stock": 40
+    },
+    {
+      "id": "9",
+      "provider": "Smartfren",
+      "title": "Unlimited Lite",
+      "description": "Paket unlimited dengan kecepatan stabil untuk area 4G",
+      "quota": "Unlimited",
+      "price": 60000,
+      "validity": "30 Hari",
+      "category": "internet",
+      "color": "purple",
+      "popular": false,
+      "stock": 75
+    },
+    {
+      "id": "10",
+      "provider": "Axis",
+      "title": "Axis Data",
+      "description": "Paket hemat dengan jangkauan luas di seluruh Indonesia",
+      "quota": "18 GB",
+      "price": 35000,
+      "validity": "30 Hari",
+      "category": "internet",
+      "color": "green",
+      "popular": true,
+      "stock": 65
+    }
   ],
-  "orders": []
+  "orders": [
+    {
+      "id": "ORD-001",
+      "userId": 1,
+      "productId": 1,
+      "packageName": "Internet OMG! - Telkomsel",
+      "provider": "Telkomsel",
+      "price": 25000,
+      "phoneNumber": "081234567890",
+      "status": "completed",
+      "orderDate": "2024-01-15T10:30:00Z",
+      "validUntil": "2024-02-14T23:59:59Z",
+      "paymentMethod": "balance"
+    },
+    {
+      "id": "ORD-002",
+      "userId": 1,
+      "productId": 4,
+      "packageName": "Mentari Paket - Indosat",
+      "provider": "Indosat",
+      "price": 65000,
+      "phoneNumber": "081234567890",
+      "status": "completed",
+      "orderDate": "2024-01-12T14:20:00Z",
+      "validUntil": "2024-02-11T23:59:59Z",
+      "paymentMethod": "balance"
+    },
+    {
+      "id": "ORD-003",
+      "userId": 2,
+      "productId": 6,
+      "packageName": "Bebas Akses - XL",
+      "provider": "XL",
+      "price": 85000,
+      "phoneNumber": "081298765432",
+      "status": "pending",
+      "orderDate": "2024-01-18T09:15:00Z",
+      "validUntil": null,
+      "paymentMethod": "bank_transfer"
+    },
+    {
+      "id": "ORD-004",
+      "userId": 2,
+      "productId": 10,
+      "packageName": "Axis Data - Axis",
+      "provider": "Axis",
+      "price": 35000,
+      "phoneNumber": "081298765432",
+      "status": "failed",
+      "orderDate": "2024-01-17T16:45:00Z",
+      "validUntil": null,
+      "paymentMethod": "balance"
+    },
+    {
+      "id": "ORD-1760867206174",
+      "userId": "1",
+      "productId": "1",
+      "packageName": "Internet OMG! - Telkomsel",
+      "provider": "Telkomsel",
+      "price": 25000,
+      "phoneNumber": "081234567890",
+      "paymentMethod": "balance",
+      "status": "completed",
+      "orderDate": "2025-10-19T09:46:46.174Z",
+      "validUntil": "2025-11-18T09:46:46.201Z"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "1",
+      "userId": 1,
+      "type": "topup",
+      "amount": 200000,
+      "status": "completed",
+      "date": "2024-01-10T08:00:00Z",
+      "method": "bank_transfer"
+    },
+    {
+      "id": "2",
+      "userId": 1,
+      "type": "purchase",
+      "amount": -25000,
+      "status": "completed",
+      "date": "2024-01-15T10:30:00Z",
+      "orderId": "ORD-001"
+    },
+    {
+      "id": "3",
+      "userId": 2,
+      "type": "topup",
+      "amount": 100000,
+      "status": "completed",
+      "date": "2024-01-11T11:20:00Z",
+      "method": "e-wallet"
+    },
+    {
+      "id": 1760867206212,
+      "userId": "1",
+      "type": "purchase",
+      "amount": -25000,
+      "status": "completed",
+      "orderId": "ORD-1760867206174",
+      "date": "2025-10-19T09:46:46.212Z"
+    }
+  ]
 }
