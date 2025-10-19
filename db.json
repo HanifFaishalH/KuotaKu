@@ -1,0 +1,12 @@
+{
+  "users": [
+    { "id": 1, "name": "Hanif", "email": "hanif@mail.com", "password": "1234", "role": "customer" },
+    { "id": 2, "name": "Siti", "email": "siti@mail.com", "password": "1234", "role": "customer" }
+  ],
+  "products": [
+    { "id": 1, "name": "Kuota 5GB", "price": 25000 },
+    { "id": 2, "name": "Kuota 10GB", "price": 45000 },
+    { "id": 3, "name": "Kuota 20GB", "price": 80000 }
+  ],
+  "orders": []
+}
