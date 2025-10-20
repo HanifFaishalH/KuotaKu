@@ -140,8 +140,8 @@ export default function LoginPage({ onLogin }) {
         <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
           <h4 className="font-semibold text-purple-800 mb-2">Akun Demo:</h4>
           <p className="text-sm text-purple-700">
-            <strong>Email:</strong> user@example.com<br />
-            <strong>Password:</strong> password123
+            <strong>Email:</strong> mika@mail.com<br />
+            <strong>Password:</strong> 123455678
           </p>
         </div>
       </form>
